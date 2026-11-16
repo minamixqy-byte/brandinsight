@@ -47,25 +47,25 @@
 环境要求：Python 3.9+、Node.js 18+、pnpm 9+。首次安装依赖需要联网；完成安装与构建后，本地启动和浏览不依赖外网。首次生成案例数据库前，还需将已授权的 `小露珠_数据整理总表.xlsx` 与 `网页文案证据.csv` 放入本地 `data/source/`。
 
 ```bash
-scripts/bootstrap.sh
-scripts/start.sh
+bash scripts/bootstrap.sh
+bash scripts/start.sh
 ```
 
 访问 <http://127.0.0.1:8000>。也可分别执行：
 
 ```bash
-scripts/seed.sh
-scripts/build.sh
-scripts/start.sh
+bash scripts/seed.sh
+bash scripts/build.sh
+bash scripts/start.sh
 ```
 
-等价命令：`make install`、`make seed`、`make build`、`make start`、`make test`。端口冲突时使用 `PORT=8010 scripts/start.sh`。
+等价命令：`make install`、`make seed`、`make build`、`make start`、`make test`。端口冲突时使用 `PORT=8010 bash scripts/start.sh`。
 
 ## 备份与恢复
 
 ```bash
-scripts/backup.sh
-scripts/restore.sh data/backups/xiaoluzhu-YYYYMMDD-HHMMSS.sqlite3
+bash scripts/backup.sh
+bash scripts/restore.sh data/backups/xiaoluzhu-YYYYMMDD-HHMMSS.sqlite3
 ```
 
 备份使用 SQLite 在线备份接口生成一致性快照。恢复脚本会验证快照并先备份当前数据库；恢复前应停止服务。`data/source`、`data/uploads` 与 `data/demo` 不会被数据库恢复覆盖。

@@ -1,20 +1,20 @@
 .PHONY: install seed build start test backup
 
 install:
-	scripts/bootstrap.sh
+	bash scripts/bootstrap.sh
 
 seed:
-	scripts/seed.sh
+	bash scripts/seed.sh
 
 build:
-	scripts/build.sh
+	bash scripts/build.sh
 
 start:
-	scripts/start.sh
+	bash scripts/start.sh
 
 test:
 	.venv/bin/python -m pytest backend/tests -q
 
 backup:
-	scripts/backup.sh
+	bash scripts/backup.sh
 
