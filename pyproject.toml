@@ -1,0 +1,16 @@
+[project]
+name = "brand-insight"
+version = "1.0.0"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi==0.115.6",
+  "openpyxl==3.1.5",
+  "python-multipart==0.0.20",
+  "uvicorn==0.34.0",
+]
+
+[tool.vercel]
+entrypoint = "backend.app.main:app"
+
+[tool.vercel.scripts]
+build = "pnpm --dir frontend install --frozen-lockfile && pnpm --dir frontend build"
