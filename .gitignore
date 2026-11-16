@@ -1,0 +1,14 @@
+.venv/
+frontend/node_modules/
+frontend/dist/
+data/state/*.sqlite3*
+data/uploads/*
+!data/uploads/.gitkeep
+data/backups/
+data/source/*
+!data/source/.gitkeep
+__pycache__/
+.pytest_cache/
+work/
+outputs/*.zip
+
