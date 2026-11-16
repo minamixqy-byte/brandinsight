@@ -6,10 +6,12 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data"
+IS_VERCEL = bool(os.environ.get("VERCEL"))
+RUNTIME_DATA_DIR = Path("/tmp/brandinsight") if IS_VERCEL else DATA_DIR
 SOURCE_DIR = DATA_DIR / "source"
 DEMO_DIR = DATA_DIR / "demo"
-UPLOAD_DIR = DATA_DIR / "uploads"
-STATE_DIR = DATA_DIR / "state"
+UPLOAD_DIR = RUNTIME_DATA_DIR / "uploads"
+STATE_DIR = RUNTIME_DATA_DIR / "state"
 FRONTEND_DIST = PROJECT_ROOT / "frontend" / "dist"
 
 DB_PATH = Path(os.environ.get("XLZ_DB_PATH", STATE_DIR / "xiaoluzhu.sqlite3"))
@@ -21,6 +23,6 @@ MAX_PAGE_SIZE = 100
 
 
 def ensure_directories() -> None:
-    for path in (SOURCE_DIR, DEMO_DIR, UPLOAD_DIR, STATE_DIR):
+    for path in (UPLOAD_DIR, STATE_DIR):
         path.mkdir(parents=True, exist_ok=True)
 
