@@ -13,4 +13,4 @@ dependencies = [
 entrypoint = "backend.app.main:app"
 
 [tool.vercel.scripts]
-build = "pnpm --dir frontend install --frozen-lockfile && pnpm --dir frontend build"
+build = "pnpm --dir frontend install --no-frozen-lockfile && pnpm --dir frontend build"
