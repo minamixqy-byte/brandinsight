@@ -9,7 +9,7 @@ if [[ -z "$backup_path" || ! -f "$backup_path" ]]; then
   exit 1
 fi
 .venv/bin/python -c 'import sqlite3,sys; src=sqlite3.connect(sys.argv[1]); src.execute("PRAGMA schema_version").fetchone(); src.close()' "$backup_path"
-scripts/backup.sh >/dev/null
+bash scripts/backup.sh >/dev/null
 cp "$backup_path" data/state/xiaoluzhu.sqlite3
 echo "已恢复数据库，恢复前状态已自动备份到 data/backups/。"
 

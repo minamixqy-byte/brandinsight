@@ -11,7 +11,7 @@ if [[ ! -f data/state/xiaoluzhu.sqlite3 ]]; then
   .venv/bin/python -m backend.app.seed
 fi
 if [[ ! -f frontend/dist/index.html ]]; then
-  scripts/build.sh
+  bash scripts/build.sh
 fi
 
 exec .venv/bin/python -m uvicorn backend.app.main:app --host 127.0.0.1 --port "${PORT:-8000}"
