@@ -1,0 +1,162 @@
+{
+  "status": "ready",
+  "dataset_id": "xlz-case-v1",
+  "generated_at": "2026-11-16T20:55:01+08:00",
+  "inputs": {
+    "小露珠_数据整理总表.xlsx": {
+      "sha256": "c7fc98e079b826ecedceef16b7319352f5063dcc12c84a525b309e48936f505b",
+      "size": 684011
+    },
+    "网页文案证据.csv": {
+      "sha256": "02403664c23e1002dabc5c8a790eda5ee2b72002203312ccea873fdca1176f9d",
+      "size": 23499,
+      "encoding": "utf-8-sig"
+    }
+  },
+  "required_sheets": {
+    "统一明细表": {
+      "present": true,
+      "rows": 6611
+    },
+    "官网产品信息": {
+      "present": true,
+      "rows": 72
+    },
+    "样本量说明": {
+      "present": true,
+      "rows": 8
+    },
+    "统计结果": {
+      "present": true,
+      "rows": 41
+    },
+    "评论证据": {
+      "present": true,
+      "rows": 81
+    }
+  },
+  "unified_records": 6610,
+  "platform_content_counts": [
+    {
+      "platform": "天猫",
+      "content_type": "购买前咨询",
+      "count": 1143
+    },
+    {
+      "platform": "天猫",
+      "content_type": "购买后评价",
+      "count": 721
+    },
+    {
+      "platform": "官网",
+      "content_type": "官方产品信息",
+      "count": 71
+    },
+    {
+      "platform": "小红书",
+      "content_type": "用户笔记",
+      "count": 179
+    },
+    {
+      "platform": "小红书",
+      "content_type": "社媒评论",
+      "count": 1478
+    },
+    {
+      "platform": "抖音",
+      "content_type": "社媒评论",
+      "count": 2808
+    },
+    {
+      "platform": "抖音",
+      "content_type": "视频",
+      "count": 210
+    }
+  ],
+  "key_foreign_keys": {
+    "official_product_present": true,
+    "evidence_csv_ids": 49,
+    "missing_from_unified_or_alias": [],
+    "key_evidence": [
+      {
+        "record_id": "HRNF00000134",
+        "resolved": true
+      },
+      {
+        "record_id": "20261029_T00054",
+        "resolved": true
+      },
+      {
+        "record_id": "20261029_T00238",
+        "resolved": true
+      },
+      {
+        "record_id": "Q00019",
+        "resolved": true
+      },
+      {
+        "record_id": "Q00195",
+        "resolved": true
+      },
+      {
+        "record_id": "DY_C000001",
+        "resolved": true
+      },
+      {
+        "record_id": "XHS_N001",
+        "resolved": true
+      },
+      {
+        "record_id": "XHS_N002",
+        "resolved": true
+      },
+      {
+        "record_id": "XHS_N003",
+        "resolved": true
+      }
+    ]
+  },
+  "note_aliases": {
+    "verified": [
+      {
+        "alias": "XHS_N001",
+        "canonical_record_id": "XHS_N_6aaf7040000000001203f3af",
+        "verification": "原文标准化后唯一匹配"
+      },
+      {
+        "alias": "XHS_N003",
+        "canonical_record_id": "XHS_N_6a00408c0000000007011665",
+        "verification": "原文标准化后唯一匹配"
+      },
+      {
+        "alias": "XHS_N002",
+        "canonical_record_id": "XHS_N_6a55092a000000000f017042",
+        "verification": "原文标准化后唯一匹配"
+      }
+    ],
+    "conflicts": [],
+    "unresolved": []
+  },
+  "missing_metadata": {
+    "dates_by_platform": {},
+    "tags_by_platform": {
+      "官网": 61,
+      "天猫": 1864,
+      "小红书": 53
+    },
+    "sentiment_by_platform": {
+      "天猫": 1864,
+      "抖音": 210,
+      "小红书": 179
+    },
+    "author_type_field_present": false
+  },
+  "analysis_sample_membership": {
+    "per_record_field_present": false,
+    "douyin_expected": 791,
+    "xiaohongshu_expected": 707,
+    "dynamic_drilldown_available": false,
+    "note": "总表提供固定汇总，但统一明细表未提供 791/707 的逐条样本名单或可复算字段。"
+  },
+  "analytics_mode": "fixed_summary"
+}
