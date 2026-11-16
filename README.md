@@ -70,6 +70,10 @@ bash scripts/restore.sh data/backups/xiaoluzhu-YYYYMMDD-HHMMSS.sqlite3
 
 备份使用 SQLite 在线备份接口生成一致性快照。恢复脚本会验证快照并先备份当前数据库；恢复前应停止服务。`data/source`、`data/uploads` 与 `data/demo` 不会被数据库恢复覆盖。
 
+## Vercel 部署
+
+仓库已通过 `pyproject.toml` 声明 FastAPI 入口，并在部署期间构建 Vite 前端。Vercel Functions 只有 `/tmp` 可写，因此线上 SQLite 与上传文件使用临时目录；它们适合演示，但不会跨冷启动或重新部署持久保存。需要长期保存导入数据时，应改接托管数据库与对象存储。
+
 ## 答辩演示步骤
 
 1. 打开 `/`，说明平台价值和“检索 → 分类 → 分析 → 行动”流程，点击“进入小露珠案例”。
