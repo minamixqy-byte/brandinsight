@@ -9,7 +9,7 @@ export function EvidenceLink({ record, dataset = "case", compact = false }: { re
   }
   const id = record.requested_record_id || record.record_id;
   if (record.missing) {
-    return <span className="status-warn">对应��馈暂缺</span>;
+    return <span className="status-warn">对应反馈暂缺</span>;
   }
   const target = `/evidence?dataset=${dataset}&record=${encodeURIComponent(id)}&from=${encodeURIComponent(location.pathname + location.search)}`;
   if (compact) {
