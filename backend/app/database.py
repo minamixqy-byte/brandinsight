@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Iterator
 
 from .config import CASE_DATASET, DB_PATH, SANDBOX_DATASET, ensure_directories
+from .content import CLAIMS, COMPARISONS, RECOMMENDATIONS
 
 
 SCHEMA = """
@@ -171,3 +172,55 @@ def init_db(path: Path | None = None) -> None:
                ON CONFLICT(dataset_id) DO NOTHING""",
             (SANDBOX_DATASET, "试验数据集",),
         )
+        for claim in CLAIMS:
+            db.execute(
+                """INSERT INTO claims(claim_id, topic, title, quote, record_id, source_name, collected_at, summary)
+                   VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+                   ON CONFLICT(claim_id) DO UPDATE SET
+                     topic=excluded.topic,
+                     title=excluded.title,
+                     quote=excluded.quote,
+                     record_id=excluded.record_id,
+                     source_name=excluded.source_name,
+                     collected_at=excluded.collected_at,
+                     summary=excluded.summary""",
+                tuple(claim[key] for key in ("claim_id", "topic", "title", "quote", "record_id", "source_name", "collected_at", "summary")),
+            )
+        for comparison in COMPARISONS:
+            db.execute(
+                """INSERT INTO comparisons(topic, title, claim_id, judgment, conditions, status, action_id)
+                   VALUES(?, ?, ?, ?, ?, ?, ?)
+                   ON CONFLICT(topic) DO UPDATE SET
+                     title=excluded.title,
+                     claim_id=excluded.claim_id,
+                     judgment=excluded.judgment,
+                     conditions=excluded.conditions,
+                     status=excluded.status,
+                     action_id=excluded.action_id""",
+                tuple(comparison[key] for key in ("topic", "title", "claim_id", "judgment", "conditions", "status", "action_id")),
+            )
+            db.executemany(
+                """INSERT INTO comparison_evidence(topic, record_id, role, sort_order)
+                   VALUES(?, ?, ?, ?)
+                   ON CONFLICT(topic, record_id, role) DO UPDATE SET sort_order=excluded.sort_order""",
+                [(comparison["topic"], record_id, role, order) for order, (record_id, role) in enumerate(comparison["evidence"])],
+            )
+        for recommendation in RECOMMENDATIONS:
+            db.execute(
+                """INSERT INTO recommendations(action_id, title, action_text, owner, metric, topic, priority)
+                   VALUES(?, ?, ?, ?, ?, ?, ?)
+                   ON CONFLICT(action_id) DO UPDATE SET
+                     title=excluded.title,
+                     action_text=excluded.action_text,
+                     owner=excluded.owner,
+                     metric=excluded.metric,
+                     topic=excluded.topic,
+                     priority=excluded.priority""",
+                tuple(recommendation[key] for key in ("action_id", "title", "action_text", "owner", "metric", "topic", "priority")),
+            )
+            db.executemany(
+                """INSERT INTO recommendation_evidence(action_id, record_id)
+                   VALUES(?, ?)
+                   ON CONFLICT(action_id, record_id) DO NOTHING""",
+                [(recommendation["action_id"], record_id) for record_id in recommendation["evidence"]],
+            )
