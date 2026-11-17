@@ -5,11 +5,11 @@ import type { RecordItem } from "../types";
 export function EvidenceLink({ record, dataset = "case", compact = false }: { record?: RecordItem | null; dataset?: string; compact?: boolean }) {
   const location = useLocation();
   if (!record) {
-    return <span className="status-warn">对应反馈暂缺</span>;
+    return <span className="status-neutral">逐条原文待关联</span>;
   }
   const id = record.requested_record_id || record.record_id;
   if (record.missing) {
-    return <span className="status-warn">对应反馈暂缺</span>;
+    return <span className="status-neutral">逐条原文待关联</span>;
   }
   const target = `/evidence?dataset=${dataset}&record=${encodeURIComponent(id)}&from=${encodeURIComponent(location.pathname + location.search)}`;
   if (compact) {
