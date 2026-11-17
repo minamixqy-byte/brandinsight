@@ -71,7 +71,7 @@ export function ConsumerPage() {
               {analytics.error ? <ErrorState message={analytics.error} retry={analytics.retry} /> : null}
               {analytics.data ? (
                 <>
-                  <div className="h-[320px] min-h-[320px] w-full" aria-label="社媒��馈主题分布条形图">
+                  <div className="h-[320px] min-h-[320px] w-full" aria-label="社媒反馈主题分布条形图">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={analytics.data.topics} margin={{ top: 8, right: 8, left: -18, bottom: 6 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#EAE3E1" vertical={false} />
