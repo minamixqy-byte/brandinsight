@@ -44,7 +44,7 @@ export function ConsumerPage() {
                 const compareTopic = item.title.includes("保湿") ? "moisture" : item.title.includes("使用说明") ? "steps" : null;
                 return (
                 <article key={item.title} className="rounded-[16px] border border-line bg-white p-5 md:p-7">
-                  <h3 className="inline-block rounded-[9px] border-[4px] border-plum px-4 py-2 text-xl font-black leading-tight tracking-[-0.025em] text-plum md:text-[26px]">{item.title}</h3>
+                  <h3 className="text-xl font-black leading-tight tracking-[-0.025em] text-plum md:text-[26px]">{item.title}</h3>
                   <p className="mt-5 max-w-[62ch] text-base font-medium leading-7 text-ink">{item.summary}</p>
                   <div className="mt-6 border-t border-line pt-4">
                     <p className="mb-2 text-xs font-bold text-muted">相关用户反馈</p>
@@ -71,7 +71,7 @@ export function ConsumerPage() {
               {analytics.error ? <ErrorState message={analytics.error} retry={analytics.retry} /> : null}
               {analytics.data ? (
                 <>
-                  <div className="h-[320px] min-h-[320px] w-full" aria-label="社媒反馈主题分布条形图">
+                  <div className="h-[320px] min-h-[320px] w-full" aria-label="社媒��馈主题分布条形图">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={analytics.data.topics} margin={{ top: 8, right: 8, left: -18, bottom: 6 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#EAE3E1" vertical={false} />
