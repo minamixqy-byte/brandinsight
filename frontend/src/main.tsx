@@ -2,9 +2,9 @@ import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { AppShell } from "./components/AppShell";
+import { LandingPage } from "./pages/LandingPage";
 import "./index.css";
 
-const LandingPage = lazy(() => import("./pages/LandingPage").then((module) => ({ default: module.LandingPage })));
 const OverviewPage = lazy(() => import("./pages/OverviewPage").then((module) => ({ default: module.OverviewPage })));
 const ClaimsPage = lazy(() => import("./pages/ClaimsPage").then((module) => ({ default: module.ClaimsPage })));
 const ConsumerPage = lazy(() => import("./pages/ConsumerPage").then((module) => ({ default: module.ConsumerPage })));
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
       { path: "data", element: pending(<DataPage />) }
     ]
   },
-  { path: "*", element: pending(<NotFoundPage />) }
+  { path: "*", ement: pending(<NotFoundPage />) }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
