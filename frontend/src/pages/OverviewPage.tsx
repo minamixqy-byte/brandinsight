@@ -21,6 +21,7 @@ export function OverviewPage() {
   const actions = useApi<ActionsResponse>("/case/recommendations");
   const analytics = useApi<AnalyticsData>("/analytics/topics");
   const priority = actions.data?.items[0];
+  const recentRecords = data?.findings[0]?.records.filter((record) => !record.missing).slice(0, 4) || [];
 
   return (
     <>
@@ -65,7 +66,7 @@ export function OverviewPage() {
 
           <section aria-labelledby="tabs-heading"><h2 id="tabs-heading" className="section-title">按业务问题继续分析</h2><nav className="mt-4 grid overflow-hidden rounded-[16px] border border-line bg-white sm:grid-cols-2 lg:grid-cols-4" aria-label="小露珠洞察主题">{insightTabs.map((tab, index) => <Link key={tab.key} className={`flex min-h-16 items-center justify-between px-5 text-sm font-bold text-plum hover:bg-rose-soft ${index ? "border-t border-line sm:border-l sm:border-t-0" : ""}`} to={`/consumer?tab=${tab.key}`}><span>{tab.label}</span><ArrowRight size={16} className="text-rose" /></Link>)}</nav></section>
 
-          {data.findings[0] ? <section className="rounded-[16px] border border-line bg-white p-5 md:p-7"><div className="flex flex-wrap items-end justify-between gap-4"><div><h2 className="section-title">近期用户反馈</h2><p className="mt-2 text-sm text-muted">从核心发现按需打开采集原文。</p></div><Link className="btn-plain" to="/evidence">查看全部反馈<ArrowRight size={14} /></Link></div><div className="mt-5 grid gap-3 md:grid-cols-2">{data.findings[0].records.slice(0, 4).map((record) => <EvidenceLink key={record.requested_record_id || record.record_id} record={record} />)}</div></section> : null}
+          {data.findings[0] ? <section className="rounded-2xl border border-line bg-white p-5 md:p-7"><div className="flex flex-wrap items-end justify-between gap-4"><div><h2 className="section-title">近期用户反馈</h2><p className="mt-2 text-sm text-muted">从核心发现按需打开采集原文。</p></div><Link className="btn-plain" to="/evidence">查看全部反馈<ArrowRight size={14} /></Link></div>{recentRecords.length ? <div className="mt-5 grid gap-3 md:grid-cols-2">{recentRecords.map((record) => <EvidenceLink key={record.requested_record_id || record.record_id} record={record} />)}</div> : <div className="mt-5 rounded-2xl border border-line bg-canvas p-5"><p className="text-sm font-bold text-ink">逐条原文仍待关联</p><p className="mt-1 text-xs leading-6 text-muted">当前页面保留已经核对的研究结论，不用重复的空白卡片代替证据。你仍可前往用户反馈页检索原始记录。</p></div>}</section> : null}
         </div>
       ) : null}
     </>
