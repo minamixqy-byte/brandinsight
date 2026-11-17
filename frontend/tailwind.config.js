@@ -4,27 +4,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        canvas: "#FAF8F7",
+        canvas: "#F7F5F4",
         panel: "#FFFFFF",
-        line: "#EAE3E1",
-        rose: "#B77D87",
-        "rose-soft": "#F5E8E9",
-        plum: "#4A3036",
-        ink: "#282323",
-        muted: "#817878",
+        line: "#E2DCDA",
+        rose: "#A95E6F",
+        "rose-soft": "#F4E7EA",
+        plum: "#38262B",
+        ink: "#211D1E",
+        muted: "#675F60",
         success: "#648A72",
         warning: "#9A6C3E",
-        accent: "#A96673",
-        "accent-soft": "#F5E8E9",
-        navy: "#3A2A2D",
-        "slate-soft": "#F7F3F2"
+        accent: "#A95E6F",
+        "accent-soft": "#F4E7EA",
+        navy: "#2D2225",
+        "slate-soft": "#F2EFEE"
       },
       fontFamily: {
         sans: ["Noto Sans SC", "PingFang SC", "Microsoft YaHei", "system-ui", "sans-serif"],
         metric: ["SF Pro Display", "PingFang SC", "system-ui", "sans-serif"]
       },
       boxShadow: {
-        soft: "0 18px 50px rgba(74, 48, 54, 0.10)"
+        soft: "0 18px 50px rgba(56, 38, 43, 0.09)",
+        lift: "0 24px 70px rgba(56, 38, 43, 0.13)"
       }
     }
   },
