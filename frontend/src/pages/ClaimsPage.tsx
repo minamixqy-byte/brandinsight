@@ -2,29 +2,30 @@ import { ArrowRight, ArrowSquareOut } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import { useApi } from "../api";
 import { EvidenceLink } from "../components/EvidenceLink";
-import { ErrorState, LoadingState, PageHeader } from "../components/UI";
+import { EmptyState, ErrorState, LoadingState, PageHeader } from "../components/UI";
 import type { RecordItem } from "../types";
 
 type ClaimsResponse = { source: string; collected_at: string; items: Array<{ claim_id: string; topic: string; title: string; quote: string; summary: string; source_name: string; collected_at: string; record: RecordItem }> };
 
 export function ClaimsPage() {
   const { data, error, loading, retry } = useApi<ClaimsResponse>("/case/claims");
+  const featuredClaim = data?.items[0];
   return (
     <>
       <PageHeader title="品牌宣传" description="将官网采集原文、研究归纳和消费者体验分开呈现，并保留来源入口。" />
       {loading ? <LoadingState rows={3} /> : null}
       {error ? <ErrorState message={error} retry={retry} /> : null}
-      {data ? (
+      {data?.items.length ? (
         <div className="space-y-7">
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted"><span className="status-good">官方来源</span><span>{data.source}</span><span>采集日期 {data.collected_at}</span></div>
           <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
             <article className="rounded-xl bg-plum p-6 text-white md:p-8">
               <p className="text-xs font-bold text-[#e8ccd3]">官方宣传原文示例</p>
-              <blockquote className="mt-6 text-3xl font-bold leading-tight tracking-[-0.03em]">“{data.items[0]?.quote}”</blockquote>
-              <p className="mt-5 text-sm leading-6 text-[#eadfe3]">{data.items[0]?.source_name}，记录编号 {data.items[0]?.record.record_id}</p>
+              <blockquote className="mt-6 text-3xl font-bold leading-tight tracking-[-0.03em]">“{featuredClaim?.quote}”</blockquote>
+              <p className="mt-5 text-sm leading-6 text-[#eadfe3]">{featuredClaim?.source_name}，记录编号 {featuredClaim?.record?.record_id || "原始记录暂缺"}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <EvidenceLink record={data.items[0]?.record} compact />
-                {data.items[0]?.record.source_url ? <a className="inline-flex items-center gap-1 text-sm font-bold text-white underline-offset-4 hover:underline" href={data.items[0].record.source_url} target="_blank" rel="noreferrer">打开官网商品页<ArrowSquareOut size={16} /></a> : null}
+                <EvidenceLink record={featuredClaim?.record} compact />
+                {featuredClaim?.record?.source_url ? <a className="inline-flex items-center gap-1 text-sm font-bold text-white underline-offset-4 hover:underline" href={featuredClaim.record.source_url} target="_blank" rel="noreferrer">打开官网商品页<ArrowSquareOut size={16} /></a> : null}
               </div>
             </article>
             <div className="card">
@@ -53,7 +54,7 @@ export function ClaimsPage() {
             </div>
           </section>
         </div>
-      ) : null}
+      ) : data ? <EmptyState title="品牌宣传内容暂未就绪" description="页面没有可展示的公开宣传内容，请稍后重试。" /> : null}
     </>
   );
 }
