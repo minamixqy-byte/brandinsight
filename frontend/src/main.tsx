@@ -33,7 +33,7 @@ const router = createBrowserRouter([
       { path: "data", element: pending(<DataPage />) }
     ]
   },
-  { path: "*", ement: pending(<NotFoundPage />) }
+  { path: "*", element: pending(<NotFoundPage />) }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
