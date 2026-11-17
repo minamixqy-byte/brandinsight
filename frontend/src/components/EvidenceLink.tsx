@@ -2,13 +2,16 @@ import { ArrowRight } from "@phosphor-icons/react";
 import { Link, useLocation } from "react-router-dom";
 import type { RecordItem } from "../types";
 
-export function EvidenceLink({ record, dataset = "case", compact = false }: { record: RecordItem; dataset?: string; compact?: boolean }) {
+export function EvidenceLink({ record, dataset = "case", compact = false }: { record?: RecordItem | null; dataset?: string; compact?: boolean }) {
   const location = useLocation();
-  const id = record.requested_record_id || record.record_id;
-  const target = `/evidence?dataset=${dataset}&record=${encodeURIComponent(id)}&from=${encodeURIComponent(location.pathname + location.search)}`;
-  if (record.missing) {
+  if (!record) {
     return <span className="status-warn">对应反馈暂缺</span>;
   }
+  const id = record.requested_record_id || record.record_id;
+  if (record.missing) {
+    return <span className="status-warn">对应��馈暂缺</span>;
+  }
+  const target = `/evidence?dataset=${dataset}&record=${encodeURIComponent(id)}&from=${encodeURIComponent(location.pathname + location.search)}`;
   if (compact) {
     return <Link className="btn-plain" to={target}>查看相关原文<ArrowRight size={14} /></Link>;
   }
