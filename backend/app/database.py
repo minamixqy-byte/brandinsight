@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import sqlite3
+import shutil
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
 
-from .config import CASE_DATASET, DB_PATH, SANDBOX_DATASET, ensure_directories
+from .config import CASE_DATASET, DB_PATH, PACKAGED_DB_PATH, SANDBOX_DATASET, ensure_directories
 from .content import CLAIMS, COMPARISONS, RECOMMENDATIONS
 
 
@@ -133,6 +134,19 @@ CREATE TABLE IF NOT EXISTS import_batches (
   FOREIGN KEY (dataset_id) REFERENCES datasets(dataset_id)
 );
 """
+
+
+def prepare_runtime_database(
+    target: Path = DB_PATH,
+    packaged: Path = PACKAGED_DB_PATH,
+) -> bool:
+    """Copy the packaged read-only case database into writable runtime storage once."""
+    if target.exists() or not packaged.exists() or target.resolve() == packaged.resolve():
+        return False
+
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(packaged, target)
+    return True
 
 
 def connect(path: Path | None = None) -> sqlite3.Connection:
