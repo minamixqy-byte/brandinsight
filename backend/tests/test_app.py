@@ -11,6 +11,7 @@ os.environ["XLZ_DB_PATH"] = str(TEST_DB)
 from fastapi.testclient import TestClient
 
 from backend.app.main import app
+from backend.app.config import FRONTEND_DIST
 from backend.app.seed import seed_database
 
 
@@ -102,4 +103,18 @@ def test_invalid_url_blocks_commit() -> None:
         assert commit.status_code == 422
         search = client.get("/api/records", params={"dataset": "sandbox", "q": "BAD_URL_001"})
         assert search.json()["total"] == 0
+
+
+def test_frontend_cache_headers() -> None:
+    if not FRONTEND_DIST.joinpath("index.html").exists():
+        return
+
+    with TestClient(app) as client:
+        home = client.get("/")
+        assert home.status_code == 200
+        assert home.headers["cache-control"] == "no-store, max-age=0"
+
+        nested_route = client.get("/workspace")
+        assert nested_route.status_code == 200
+        assert nested_route.headers["cache-control"] == "no-store, max-age=0"
 
