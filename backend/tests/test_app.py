@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient
 
 from backend.app.main import app
 from backend.app.config import FRONTEND_DIST
+from backend.app.database import prepare_runtime_database
 from backend.app.seed import seed_database
 
 
@@ -117,4 +118,17 @@ def test_frontend_cache_headers() -> None:
         nested_route = client.get("/workspace")
         assert nested_route.status_code == 200
         assert nested_route.headers["cache-control"] == "no-store, max-age=0"
+
+
+def test_packaged_database_is_copied_only_once(tmp_path: Path) -> None:
+    packaged = tmp_path / "packaged.sqlite3"
+    target = tmp_path / "runtime" / "brandinsight.sqlite3"
+    packaged.write_bytes(b"packaged-database")
+
+    assert prepare_runtime_database(target, packaged) is True
+    assert target.read_bytes() == b"packaged-database"
+
+    packaged.write_bytes(b"new-package")
+    assert prepare_runtime_database(target, packaged) is False
+    assert target.read_bytes() == b"packaged-database"
 
