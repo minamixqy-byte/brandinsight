@@ -7,9 +7,140 @@
     <meta name="description" content="面向品牌营销与消费者洞察团队的本地品牌洞察平台" />
     <link rel="preload" as="image" href="/assets/xiaoluzhu-official.jpg" fetchpriority="high" />
     <title>Brand Insight 品牌消费者洞察平台</title>
+    <style>
+      html,
+      body,
+      #root {
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        background: #f7f5f4;
+        color: #35272b;
+        font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      }
+
+      .app-boot {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 32px;
+        box-sizing: border-box;
+      }
+
+      .app-boot__content {
+        width: min(440px, 100%);
+        text-align: center;
+      }
+
+      .app-boot__brand {
+        margin: 0 0 18px;
+        color: #35272b;
+        font-size: 20px;
+        font-weight: 750;
+        letter-spacing: -0.03em;
+      }
+
+      .app-boot__indicator {
+        width: 48px;
+        height: 3px;
+        margin: 0 auto 18px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #eadde0;
+      }
+
+      .app-boot__indicator::after {
+        content: "";
+        display: block;
+        width: 55%;
+        height: 100%;
+        border-radius: inherit;
+        background: #ae5f73;
+        animation: app-boot-pulse 1.2s ease-in-out infinite alternate;
+      }
+
+      .app-boot__title {
+        margin: 0 0 8px;
+        font-size: 18px;
+        font-weight: 650;
+      }
+
+      .app-boot__message {
+        margin: 0;
+        color: #796d70;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .app-boot__reload {
+        display: none;
+        margin: 22px auto 0;
+        border: 0;
+        border-radius: 10px;
+        padding: 11px 18px;
+        background: #ae5f73;
+        color: #fff;
+        font: inherit;
+        font-weight: 650;
+        cursor: pointer;
+      }
+
+      .app-boot--failed .app-boot__indicator {
+        display: none;
+      }
+
+      .app-boot--failed .app-boot__reload {
+        display: block;
+      }
+
+      @keyframes app-boot-pulse {
+        from { transform: translateX(-10px); opacity: 0.5; }
+        to { transform: translateX(30px); opacity: 1; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .app-boot__indicator::after { animation: none; }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main id="app-boot" class="app-boot" aria-live="polite">
+        <div class="app-boot__content">
+          <p class="app-boot__brand">brandinsight</p>
+          <div class="app-boot__indicator" aria-hidden="true"></div>
+          <h1 class="app-boot__title">正在加载品牌洞察</h1>
+          <p class="app-boot__message">正在连接分析结果与消费者反馈。</p>
+          <button class="app-boot__reload" type="button" onclick="window.location.reload()">重新加载</button>
+        </div>
+      </main>
+    </div>
+    <script>
+      (() => {
+        let reported = false;
+        const showBootFailure = () => {
+          if (reported || document.documentElement.dataset.appReady === "true") return;
+          reported = true;
+          const root = document.getElementById("root");
+          if (!root) return;
+          root.innerHTML = `
+            <main class="app-boot app-boot--failed" aria-live="assertive">
+              <div class="app-boot__content">
+                <p class="app-boot__brand">brandinsight</p>
+                <h1 class="app-boot__title">页面暂时未能加载</h1>
+                <p class="app-boot__message">可能是浏览器仍在使用旧版资源。重新加载即可获取最新页面。</p>
+                <button class="app-boot__reload" type="button" onclick="window.location.reload()">重新加载</button>
+              </div>
+            </main>`;
+        };
+
+        window.addEventListener("error", showBootFailure, { once: true });
+        window.addEventListener("unhandledrejection", showBootFailure, { once: true });
+        window.setTimeout(showBootFailure, 10000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
