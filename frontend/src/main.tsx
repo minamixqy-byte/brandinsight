@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { AppShell } from "./components/AppShell";
@@ -15,6 +15,49 @@ const DataPage = lazy(() => import("./pages/DataPage").then((module) => ({ defau
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage").then((module) => ({ default: module.NotFoundPage })));
 
 const pending = (element: React.ReactNode) => <Suspense fallback={<div className="h-36 animate-pulse rounded-xl border border-line bg-white" aria-label="正在加载页面" />}>{element}</Suspense>;
+
+class AppErrorBoundary extends React.Component<React.PropsWithChildren, { failed: boolean }> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error("Brand Insight 页面加载失败", error);
+  }
+
+  render() {
+    if (this.state.failed) {
+      return (
+        <main className="grid min-h-screen place-items-center bg-canvas px-6 py-12 text-ink">
+          <div className="w-full max-w-md text-center">
+            <p className="mb-5 text-xl font-bold tracking-tight">brandinsight</p>
+            <h1 className="text-xl font-semibold">页面暂时未能加载</h1>
+            <p className="mt-3 text-sm leading-7 text-muted">浏览器可能仍在使用旧版资源，重新加载即可获取最新页面。</p>
+            <button
+              type="button"
+              className="mt-6 rounded-lg bg-rose px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+              onClick={() => window.location.reload()}
+            >
+              重新加载
+            </button>
+          </div>
+        </main>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+function AppReady() {
+  useEffect(() => {
+    document.documentElement.dataset.appReady = "true";
+  }, []);
+
+  return null;
+}
 
 const router = createBrowserRouter([
   { path: "/", element: pending(<LandingPage />) },
@@ -37,6 +80,11 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode><RouterProvider router={router} /></React.StrictMode>
+  <React.StrictMode>
+    <AppErrorBoundary>
+      <AppReady />
+      <RouterProvider router={router} />
+    </AppErrorBoundary>
+  </React.StrictMode>
 );
 
