@@ -391,11 +391,20 @@ def list_imports() -> dict[str, Any]:
 class SPAStaticFiles(StaticFiles):
     async def get_response(self, path: str, scope: dict[str, Any]):
         try:
-            return await super().get_response(path, scope)
+            response = await super().get_response(path, scope)
         except (StarletteHTTPException, HTTPException) as exc:
             if getattr(exc, "status_code", None) == 404 and FRONTEND_DIST.joinpath("index.html").exists():
-                return FileResponse(FRONTEND_DIST / "index.html")
-            raise
+                response = FileResponse(FRONTEND_DIST / "index.html")
+            else:
+                raise
+
+        content_type = response.headers.get("content-type", "")
+        if content_type.startswith("text/html"):
+            response.headers["Cache-Control"] = "no-store, max-age=0"
+        elif path.startswith("assets/"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+
+        return response
 
 
 if FRONTEND_DIST.exists():
