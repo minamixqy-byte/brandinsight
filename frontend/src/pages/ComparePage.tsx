@@ -46,7 +46,7 @@ function CompareDetail({ topic }: { topic: string }) {
   const { data, error, loading, retry } = useApi<ComparisonDetail>(`/case/comparisons/${topic}`);
   return (
     <>
-      <PageHeader title={data?.title || "对照详情"} description="品牌表达与用户反馈分别呈现，判断只覆盖当前已核对材料。" action={<Link className="btn-secondary" to="/compare"><ArrowLeft size={17} />返回议题目录</Link>} />
+      <PageHeader title={data?.title || "对照详情"} description="对照品牌表达与消费者实际体验。" action={<Link className="btn-secondary" to="/compare"><ArrowLeft size={17} />返回议题目录</Link>} />
       {loading ? <LoadingState rows={4} /> : null}
       {error ? <ErrorState message={error} retry={retry} /> : null}
       {data ? (
@@ -66,7 +66,7 @@ function CompareDetail({ topic }: { topic: string }) {
               <Link className="btn-plain mt-3" to={`/evidence?record=${encodeURIComponent(data.claim_record_id)}&from=${encodeURIComponent(`/compare/${topic}`)}`}>查看官网摘录<ArrowRight size={15} /></Link>
             </article>
             <article className="card">
-              <p className="text-xs font-bold text-muted">用户反馈</p>
+              <p className="text-xs font-bold text-muted">消费者原声</p>
               <div className="mt-3 grid gap-3">{data.evidence.map((item) => <div key={`${item.role}-${item.record.record_id}`}><span className="mb-2 inline-block text-xs font-bold text-muted">分析角色：{item.role}</span><EvidenceLink record={item.record} /></div>)}</div>
             </article>
           </section>

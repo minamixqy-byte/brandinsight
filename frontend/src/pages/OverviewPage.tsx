@@ -25,7 +25,7 @@ export function OverviewPage() {
 
   return (
     <>
-      <PageHeader title="品牌消费者洞察总览" description="在 30 秒内理解案例范围、核心发现、统计口径和优先行动。" action={<Link className="btn-secondary" to="/evidence"><MagnifyingGlass size={18} />搜索用户反馈</Link>} />
+      <PageHeader title="品牌消费者洞察总览" description="查看核心发现、体验差异与优先建议。" action={<Link className="btn-secondary" to="/evidence"><MagnifyingGlass size={18} />搜索消费者原声</Link>} />
       {loading ? <LoadingState rows={4} /> : null}
       {error ? <ErrorState message={error} retry={retry} /> : null}
       {data ? (
@@ -35,7 +35,7 @@ export function OverviewPage() {
               <div className="p-6 md:p-8">
                 <div className="flex flex-wrap items-center gap-3"><span className="text-xs font-bold text-rose">HELENA RUBINSTEIN</span><span className="status-good"><CheckCircle size={13} />案例数据可用</span></div>
                 <h2 className="mt-4 text-3xl font-bold tracking-[-0.035em] text-plum md:text-[38px]">小露珠品牌消费者洞察</h2>
-                <p className="mt-3 max-w-[70ch] text-sm leading-7 text-muted">理解品牌承诺与消费者实际体验。数据来自官网、天猫、抖音和小红书，所有判断均可回到采集原文。</p>
+                <p className="mt-3 max-w-[70ch] text-sm leading-7 text-muted">对照品牌表达、购买评价与社媒反馈，识别体验差异和品牌机会。</p>
                 <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6 sm:grid-cols-4">
                   <div><dt className="text-[11px] text-muted">原始记录盘点</dt><dd className="mt-1 font-metric text-2xl font-bold text-plum">6,611</dd></div>
                   <div><dt className="text-[11px] text-muted">只读种子记录</dt><dd className="mt-1 font-metric text-2xl font-bold text-plum">{data.record_count.toLocaleString("zh-CN")}</dd></div>
@@ -47,13 +47,13 @@ export function OverviewPage() {
             </div>
           </section>
 
-          <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]" aria-labelledby="brief-heading">
-            <article className="rounded-[16px] bg-plum p-6 text-white md:p-8"><p className="text-xs font-bold text-[#E7C9CF]">给品牌主的一页纸</p><h2 id="brief-heading" className="mt-3 text-2xl font-bold tracking-[-0.03em]">先明确使用条件，再优化试用、服务和取用体验。</h2><p className="mt-5 max-w-[65ch] text-sm leading-7 text-white/78">吸收、润泽和妆前使用获得部分认可，肤质、季节、单用或搭配会改变体验。当前优先级不是扩大结论，而是把消费者需要的信息写得更清楚。</p></article>
-            <article className="rounded-[16px] border border-[#D9C4C8] bg-rose-soft p-6 md:p-8"><div className="flex items-center gap-2 text-rose"><Target size={20} /><p className="text-xs font-bold">首要行动</p></div>{actions.loading ? <div className="mt-5 h-28 animate-pulse rounded-xl bg-white" /> : priority ? <><h3 className="mt-4 text-xl font-bold text-plum">{priority.title}</h3><p className="mt-3 text-sm leading-6 text-muted">{priority.action_text}</p><Link className="btn-primary mt-5" to={`/actions#${priority.action_id}`}>查看负责人和指标<ArrowRight size={16} /></Link></> : null}</article>
+          <section className="grid gap-4 lg:grid-cols-[0.82fr_1.18fr]" aria-labelledby="brief-heading">
+            <article className="rounded-[16px] border border-[#D9C4C8] bg-rose-soft p-6 md:p-8"><div className="flex items-center gap-2 text-rose"><Target size={20} /><p className="text-xs font-bold">优先建议</p></div>{actions.loading ? <div className="mt-5 h-28 animate-pulse rounded-xl bg-white" /> : priority ? <><h2 id="brief-heading" className="mt-4 text-xl font-bold text-plum">{priority.title}</h2><p className="mt-3 text-sm leading-6 text-muted">{priority.action_text}</p><Link className="btn-primary mt-5" to={`/actions#${priority.action_id}`}>查看负责团队</Link></> : null}</article>
+            <article className="rounded-[16px] bg-plum p-6 text-white md:p-8"><p className="text-xs font-bold text-[#E7C9CF]">关键判断</p><h2 className="mt-3 text-2xl font-bold tracking-[-0.03em]">吸收与妆前体验获得认可，保湿、油感和取用体验存在分歧。</h2><p className="mt-5 max-w-[65ch] text-sm leading-7 text-white/78">肤质、季节、单用或搭配会改变体验，试用、赠品和促销也参与购买判断。</p></article>
           </section>
 
           <section aria-labelledby="findings-heading">
-            <div className="flex items-end justify-between gap-4"><div><h2 id="findings-heading" className="section-title">核心发现</h2><p className="mt-2 text-sm text-muted">先看结论，再进入对应业务问题。</p></div><Link className="btn-plain" to="/consumer">查看全部洞察<ArrowRight size={14} /></Link></div>
+            <div className="flex items-end justify-between gap-4"><h2 id="findings-heading" className="section-title">核心发现</h2><Link className="btn-plain" to="/consumer">查看全部洞察<ArrowRight size={14} /></Link></div>
             <div className="mt-4 grid overflow-hidden rounded-[16px] border border-line bg-white lg:grid-cols-3">
               {data.findings.slice(0, 3).map((finding, index) => <article key={finding.key} className={`p-6 ${index ? "border-t border-line lg:border-l lg:border-t-0" : ""}`}><p className="text-xs font-bold text-rose">{finding.title}</p><h3 className="mt-3 text-lg font-bold leading-7 text-plum">{index === 0 ? "体验优势与使用条件同时存在" : index === 1 ? "试用与具体护肤需求推动考虑" : "说明、服务和包装都有优化入口"}</h3><p className="mt-3 text-sm leading-6 text-muted">{finding.summary}</p><Link className="btn-plain mt-4" to={`/consumer?tab=${finding.key}`}>查看分析<ArrowRight size={14} /></Link></article>)}
             </div>
@@ -66,7 +66,7 @@ export function OverviewPage() {
 
           <section aria-labelledby="tabs-heading"><h2 id="tabs-heading" className="section-title">按业务问题继续分析</h2><nav className="mt-4 grid overflow-hidden rounded-[16px] border border-line bg-white sm:grid-cols-2 lg:grid-cols-4" aria-label="小露珠洞察主题">{insightTabs.map((tab, index) => <Link key={tab.key} className={`flex min-h-16 items-center justify-between px-5 text-sm font-bold text-plum hover:bg-rose-soft ${index ? "border-t border-line sm:border-l sm:border-t-0" : ""}`} to={`/consumer?tab=${tab.key}`}><span>{tab.label}</span><ArrowRight size={16} className="text-rose" /></Link>)}</nav></section>
 
-          {data.findings[0] ? <section className="rounded-2xl border border-line bg-white p-5 md:p-7"><div className="flex flex-wrap items-end justify-between gap-4"><div><h2 className="section-title">近期用户反馈</h2><p className="mt-2 text-sm text-muted">从核心发现按需打开采集原文。</p></div><Link className="btn-plain" to="/evidence">查看全部反馈<ArrowRight size={14} /></Link></div>{recentRecords.length ? <div className="mt-5 grid gap-3 md:grid-cols-2">{recentRecords.map((record) => <EvidenceLink key={record.requested_record_id || record.record_id} record={record} />)}</div> : <div className="mt-5 rounded-2xl border border-line bg-canvas p-5"><p className="text-sm font-bold text-ink">逐条原文仍待关联</p><p className="mt-1 text-xs leading-6 text-muted">当前页面保留已经核对的研究结论，不用重复的空白卡片代替证据。你仍可前往用户反馈页检索原始记录。</p></div>}</section> : null}
+          {data.findings[0] ? <section className="rounded-2xl border border-line bg-white p-5 md:p-7"><div className="flex flex-wrap items-end justify-between gap-4"><h2 className="section-title">近期消费者原声</h2><Link className="btn-plain" to="/evidence">查看全部反馈<ArrowRight size={14} /></Link></div>{recentRecords.length ? <div className="mt-5 grid gap-3 md:grid-cols-2">{recentRecords.map((record) => <EvidenceLink key={record.requested_record_id || record.record_id} record={record} />)}</div> : <div className="mt-5 rounded-2xl border border-line bg-canvas p-5"><p className="text-sm font-bold text-ink">暂无关联原文</p><Link className="btn-plain mt-3" to="/evidence">搜索消费者原声</Link></div>}</section> : null}
         </div>
       ) : null}
     </>

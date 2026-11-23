@@ -18,27 +18,29 @@ export function ActionsPage() {
   const { data, error, loading, retry } = useApi<ActionsResponse>("/case/recommendations");
   return (
     <>
-      <PageHeader title="行动建议" description="每项建议固定呈现发现、原文、建议动作、负责团队和拟验证指标。" />
+      <PageHeader title="行动建议" description="按优先级查看品牌动作、负责团队与验证指标。" />
       {loading ? <LoadingState rows={4} /> : null}
       {error ? <ErrorState message={error} retry={retry} /> : null}
       {data ? (
         <div className="space-y-4">
           {data.items.map((action, index) => (
             <article id={action.action_id} key={action.action_id} className={`scroll-mt-24 rounded-xl border bg-white p-5 md:p-7 ${index === 0 ? "border-[#cfafb7] shadow-soft" : "border-line"}`}>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2"><span className={index === 0 ? "status-good" : "status-neutral"}>{index === 0 ? "首要行动" : `优先级 ${action.priority}`}</span><Target size={19} className="text-rose" /></div>
-                <h2 className="mt-3 text-xl font-bold text-ink">{action.title}</h2>
-              </div>
+              <div className="flex items-center gap-2"><span className={index === 0 ? "status-good" : "status-neutral"}>{index === 0 ? "首要建议" : `优先级 ${action.priority}`}</span><Target size={19} className="text-rose" /></div>
+              <h2 className="mt-3 text-xl font-bold text-ink">{action.title}</h2>
               <div className="mt-6 grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-                <section className="rounded-xl bg-canvas p-5"><h3 className="text-xs font-bold text-rose">发现</h3><p className="mt-3 text-sm leading-7 text-ink">{findingByAction[action.action_id]}</p></section>
-                <section className="rounded-xl bg-canvas p-5"><h3 className="text-xs font-bold text-muted">相关用户反馈</h3><blockquote className="mt-3 line-clamp-3 text-sm leading-6 text-muted">“{action.evidence[0]?.original_text || "对应原文暂缺。"}”</blockquote><div className="mt-3 flex flex-wrap gap-2">{action.evidence.map((record) => <EvidenceLink key={record.requested_record_id || record.record_id} record={record} compact />)}</div></section>
+                <div className="space-y-4">
+                  <section className="rounded-xl bg-rose-soft p-5"><h3 className="text-xs font-bold text-rose">品牌动作</h3><p className="mt-3 text-sm font-bold leading-7 text-plum">{action.action_text}</p></section>
+                  <dl className="grid gap-4 rounded-xl border border-line p-5 sm:grid-cols-2 lg:grid-cols-1">
+                    <div><dt className="text-xs font-bold text-rose">负责团队</dt><dd className="mt-2 text-sm font-bold text-ink">{action.owner}</dd></div>
+                    <div><dt className="text-xs font-bold text-rose">验证指标</dt><dd className="mt-2 text-sm font-bold leading-6 text-ink">{action.metric}</dd></div>
+                  </dl>
+                </div>
+                <div className="space-y-4">
+                  <section className="rounded-xl bg-canvas p-5"><h3 className="text-xs font-bold text-rose">数据发现</h3><p className="mt-3 text-sm leading-7 text-ink">{findingByAction[action.action_id]}</p></section>
+                  <section className="rounded-xl bg-canvas p-5"><h3 className="text-xs font-bold text-muted">相关消费者原声</h3><blockquote className="mt-3 line-clamp-3 text-sm leading-6 text-muted">“{action.evidence[0]?.original_text || "暂无关联原文。"}”</blockquote><div className="mt-3 flex flex-wrap gap-2">{action.evidence.map((record) => <EvidenceLink key={record.requested_record_id || record.record_id} record={record} compact />)}</div></section>
+                </div>
               </div>
-              <section className="mt-4 rounded-xl bg-rose-soft p-5"><h3 className="text-xs font-bold text-rose">建议动作</h3><p className="mt-3 text-sm font-bold leading-7 text-plum">{action.action_text}</p></section>
-              <dl className="mt-4 grid gap-4 rounded-xl border border-line p-5 sm:grid-cols-2">
-                <div><dt className="text-xs font-bold text-rose">负责团队</dt><dd className="mt-2 text-sm font-bold text-ink">{action.owner}</dd></div>
-                <div><dt className="text-xs font-bold text-rose">拟验证指标</dt><dd className="mt-2 text-sm font-bold leading-6 text-ink">{action.metric}</dd></div>
-              </dl>
-              {action.topic === "steps" ? <Link className="btn-secondary mt-4" to="/compare/steps">查看品牌表达与反馈对照<ArrowRight size={16} /></Link> : null}
+              {action.topic === "steps" ? <Link className="btn-secondary mt-4" to="/compare/steps">查看宣传与体验对照<ArrowRight size={16} /></Link> : null}
             </article>
           ))}
         </div>

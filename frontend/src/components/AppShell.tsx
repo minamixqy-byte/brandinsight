@@ -16,11 +16,11 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 
 const navItems = [
   { to: "/workspace", label: "总览", icon: House, end: true },
-  { to: "/claims", label: "品牌宣传", icon: Megaphone },
-  { to: "/consumer", label: "消费者洞察", icon: ChartDonut },
-  { to: "/compare", label: "宣传与体验对照", icon: Strategy },
   { to: "/actions", label: "行动建议", icon: Target },
-  { to: "/evidence", label: "用户反馈", icon: FileSearch },
+  { to: "/consumer", label: "消费者洞察", icon: ChartDonut },
+  { to: "/claims", label: "品牌宣传", icon: Megaphone },
+  { to: "/compare", label: "宣传与体验对照", icon: Strategy },
+  { to: "/evidence", label: "消费者原声", icon: FileSearch },
   { to: "/data", label: "数据管理", icon: Database }
 ];
 

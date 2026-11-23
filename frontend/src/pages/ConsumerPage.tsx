@@ -1,4 +1,4 @@
-import { ArrowRight, ChartBar as BarChartIcon, CheckCircle, Info, MagnifyingGlass, Target } from "@phosphor-icons/react";
+import { ArrowRight, ChartBar as BarChartIcon, Info, MagnifyingGlass, Target } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Link, useSearchParams } from "react-router-dom";
@@ -36,7 +36,7 @@ export function ConsumerPage() {
 
   return (
     <>
-      <PageHeader title="消费者洞察" description="按优先级阅读结论，查看适用条件、研究建议和当前证据覆盖。" action={<Link className="btn-secondary" to="/evidence"><MagnifyingGlass size={18} />搜索用户反馈</Link>} />
+      <PageHeader title="消费者洞察" description="查看产品体验、购买动机与改进机会。" action={<Link className="btn-secondary" to="/evidence"><MagnifyingGlass size={18} />搜索消费者原声</Link>} />
 
       <div className="relative mb-6 overflow-hidden">
         <div className="tab-rail flex gap-2 overflow-x-auto pb-1 pr-10" role="tablist" aria-label="消费者体验分类">
@@ -58,9 +58,11 @@ export function ConsumerPage() {
           </section>
 
           <section className="grid gap-5 xl:grid-cols-[0.78fr_1.22fr]" aria-labelledby="insight-heading">
-            <div className="overflow-hidden rounded-2xl border border-line bg-white">
-              <div className="border-b border-line px-5 py-5"><h2 id="insight-heading" className="section-title">结论优先级</h2><p className="mt-2 text-sm leading-6 text-muted">选择一条结论，右侧显示研究解释与行动。</p></div>
-              <div>
+            <div className="space-y-5">
+              {selectedItem?.action ? <section className="rounded-2xl border border-[#D9C4C8] bg-rose-soft p-5 md:p-6"><div className="flex items-center gap-2 text-rose"><Target size={19} /><h2 className="text-sm font-bold">优先建议</h2></div><p className="mt-3 text-base font-bold leading-7 text-plum">{selectedItem.action}</p></section> : null}
+              <div className="overflow-hidden rounded-2xl border border-line bg-white">
+                <div className="border-b border-line px-5 py-5"><h2 id="insight-heading" className="section-title">洞察结论</h2></div>
+                <div>
                 {data.items.map((item, index) => {
                   const itemRecords = item.records.filter((record) => !record.missing);
                   const activeItem = selectedIndex === index;
@@ -72,6 +74,7 @@ export function ConsumerPage() {
                     </button>
                   );
                 })}
+                </div>
               </div>
             </div>
 
@@ -81,14 +84,12 @@ export function ConsumerPage() {
                 <h2 className="mt-5 max-w-[28ch] text-[24px] font-bold leading-[1.35] tracking-[-0.03em] text-plum md:text-[28px]">{selectedItem.title}</h2>
                 <p className="mt-5 max-w-[66ch] text-[16px] font-medium leading-8 text-ink">{selectedItem.summary}</p>
 
-                {selectedItem.action ? <div className="mt-7 rounded-2xl bg-canvas p-5"><div className="flex items-center gap-2 text-rose"><Target size={19} /><h3 className="text-sm font-bold">建议动作</h3></div><p className="mt-3 text-sm leading-7 text-muted">{selectedItem.action}</p></div> : null}
-
                 <div className="mt-7 border-t border-line pt-6">
-                  <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-base font-bold text-ink">相关用户反馈</h3><p className="mt-1 text-xs leading-5 text-muted">这里只显示当前线上案例已经关联的逐条原文。</p></div>{validRecords.length ? <Link className="btn-plain" to="/evidence">查看全部<ArrowRight size={14} /></Link> : null}</div>
-                  {validRecords.length ? <div className="mt-4 grid gap-3 md:grid-cols-2">{validRecords.slice(0, 4).map((record) => <EvidenceLink key={record.requested_record_id || record.record_id} record={record} />)}</div> : <div className="mt-4 flex items-start gap-3 rounded-2xl border border-line bg-canvas p-5"><Info size={20} className="mt-0.5 shrink-0 text-rose" /><div><p className="text-sm font-bold text-ink">研究结论已发布，逐条原文关联仍待补充</p><p className="mt-1 text-xs leading-6 text-muted">当前页面保留研究摘要和行动建议，不用空白占位冒充证据。原始记录仍可在用户反馈页独立检索。</p><Link className="btn-plain mt-3" to="/evidence">搜索用户反馈<ArrowRight size={14} /></Link></div></div>}
+                  <div className="flex flex-wrap items-center justify-between gap-3"><h3 className="text-base font-bold text-ink">相关消费者原声</h3>{validRecords.length ? <Link className="btn-plain" to="/evidence">查看全部<ArrowRight size={14} /></Link> : null}</div>
+                  {validRecords.length ? <div className="mt-4 grid gap-3 md:grid-cols-2">{validRecords.slice(0, 4).map((record) => <EvidenceLink key={record.requested_record_id || record.record_id} record={record} />)}</div> : <div className="mt-4 flex items-start gap-3 rounded-2xl border border-line bg-canvas p-5"><Info size={20} className="mt-0.5 shrink-0 text-rose" /><div><p className="text-sm font-bold text-ink">暂无关联原文</p><Link className="btn-plain mt-3" to="/evidence">搜索消费者原声</Link></div></div>}
                 </div>
 
-                {compareTopic ? <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-rose-soft p-5"><div><p className="text-sm font-bold text-plum">品牌表达与消费者体验已有对照</p><p className="mt-1 text-xs leading-5 text-muted">继续查看研究判断和适用条件。</p></div><Link className="btn-secondary" to={`/compare/${compareTopic}`}>查看对照<ArrowRight size={15} /></Link></div> : null}
+                {compareTopic ? <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-rose-soft p-5"><p className="text-sm font-bold text-plum">品牌宣传与体验对照</p><Link className="btn-secondary" to={`/compare/${compareTopic}`}>查看对照</Link></div> : null}
               </article>
             ) : null}
           </section>
@@ -99,7 +100,7 @@ export function ConsumerPage() {
               <div className="p-4 md:p-6">{analytics.loading ? <div className="h-72 animate-pulse rounded-2xl bg-canvas" /> : null}{analytics.error ? <ErrorState message={analytics.error} retry={analytics.retry} /> : null}{analytics.data ? <div className="h-[320px] min-h-[320px] w-full" aria-label="社媒反馈主题分布条形图"><ResponsiveContainer width="100%" height="100%"><BarChart data={analytics.data.topics} margin={{ top: 8, right: 8, left: -18, bottom: 6 }}><CartesianGrid strokeDasharray="3 3" stroke="#E2DCDA" vertical={false} /><XAxis dataKey="name" tick={{ fontSize: 12, fill: "#675F60" }} axisLine={{ stroke: "#CEC5C3" }} tickLine={false} /><YAxis tick={{ fontSize: 12, fill: "#675F60" }} axisLine={false} tickLine={false} /><Tooltip contentStyle={{ border: "1px solid #E2DCDA", borderRadius: 12, boxShadow: "0 10px 30px rgba(56,38,43,.08)" }} /><Legend wrapperStyle={{ fontSize: 12 }} /><Bar dataKey="抖音" fill="#8F4E5D" radius={[5, 5, 0, 0]} /><Bar dataKey="小红书" fill="#C58D9B" radius={[5, 5, 0, 0]} /></BarChart></ResponsiveContainer></div> : null}</div>
             </article>
 
-            <aside className="rounded-2xl border border-line bg-canvas p-6 md:p-7" aria-label="统计口径说明"><div className="flex items-center gap-2 text-rose"><CheckCircle size={20} /><h2 className="text-lg font-bold text-ink">如何阅读这组数据</h2></div><dl className="mt-6 space-y-5"><div><dt className="text-xs font-bold text-muted">样本范围</dt><dd className="mt-1 text-sm leading-7 text-ink">抖音和小红书中符合分析条件的评论，共 {sampleTotal.toLocaleString("zh-CN")} 条。</dd></div><div><dt className="text-xs font-bold text-muted">统计方式</dt><dd className="mt-1 text-sm leading-7 text-ink">主题为多标签，同一条反馈可能同时进入多个主题。</dd></div><div><dt className="text-xs font-bold text-muted">证据覆盖</dt><dd className="mt-1 text-sm leading-7 text-ink">当前 {linkedInsightCount}/{data.items.length} 条结论已在生产环境关联逐条原文。</dd></div></dl><div className="mt-6 rounded-xl bg-white p-4 text-xs leading-6 text-muted"><Info size={17} className="mb-2 text-rose" />{analytics.data?.drilldown_note || "固定汇总用于观察主题分布，逐条原文需要在用户反馈页独立核对。"}</div></aside>
+            <aside className="rounded-2xl border border-line bg-canvas p-6 md:p-7" aria-label="数据说明"><h2 className="text-lg font-bold text-ink">数据说明</h2><dl className="mt-6 space-y-5"><div><dt className="text-xs font-bold text-muted">样本范围</dt><dd className="mt-1 text-sm leading-7 text-ink">抖音和小红书有效评论共 {sampleTotal.toLocaleString("zh-CN")} 条。</dd></div><div><dt className="text-xs font-bold text-muted">统计方式</dt><dd className="mt-1 text-sm leading-7 text-ink">主题采用多标签统计。</dd></div><div><dt className="text-xs font-bold text-muted">原声关联</dt><dd className="mt-1 text-sm leading-7 text-ink">{linkedInsightCount}/{data.items.length} 条结论已关联逐条原文。</dd></div></dl></aside>
           </section>
         </div>
       ) : null}

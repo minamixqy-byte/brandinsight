@@ -33,7 +33,7 @@ export function ClaimsPage() {
               <dl className="mt-4 space-y-4 text-sm">
                 <div><dt className="text-xs text-muted">宣传原文</dt><dd className="mt-1 text-ink">保留官网采集文字，不替换为研究判断。</dd></div>
                 <div><dt className="text-xs text-muted">研究归纳</dt><dd className="mt-1 text-ink">用于组织主题，不作为品牌原话。</dd></div>
-                <div><dt className="text-xs text-muted">用户反馈</dt><dd className="mt-1 text-ink">在对照页按支持、分歧或咨询角色展开。</dd></div>
+                <div><dt className="text-xs text-muted">消费者原声</dt><dd className="mt-1 text-ink">在对照页查看支持、分歧与咨询内容。</dd></div>
               </dl>
             </div>
           </section>
