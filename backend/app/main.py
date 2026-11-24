@@ -25,7 +25,7 @@ from .config import (
     SANDBOX_DATASET,
 )
 from .content import CONSUMER_TABS, FIXED_ANALYTICS, OVERVIEW
-from .database import db_session, init_db
+from .database import db_session, init_db, prepare_runtime_database
 from .importer import (
     batch_from_db,
     commit_batch,
@@ -38,6 +38,7 @@ from .importer import (
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    prepare_runtime_database()
     init_db()
     yield
 

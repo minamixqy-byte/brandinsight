@@ -13,6 +13,7 @@ DEMO_DIR = DATA_DIR / "demo"
 UPLOAD_DIR = RUNTIME_DATA_DIR / "uploads"
 STATE_DIR = RUNTIME_DATA_DIR / "state"
 FRONTEND_DIST = PROJECT_ROOT / "frontend" / "dist"
+PACKAGED_DB_PATH = DATA_DIR / "state" / "xiaoluzhu.sqlite3"
 
 DB_PATH = Path(os.environ.get("XLZ_DB_PATH", STATE_DIR / "xiaoluzhu.sqlite3"))
 CASE_DATASET = "xlz-case-v1"
